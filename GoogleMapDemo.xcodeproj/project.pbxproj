@@ -12,10 +12,12 @@
 		A22143A31F7E401800621E00 /* PhotosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22143A21F7E401800621E00 /* PhotosTableViewController.swift */; };
 		A22143A51F7E402600621E00 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22143A41F7E402600621E00 /* PhotosTableViewCell.swift */; };
 		A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27E0A1F1F7A371D00962656 /* AppDelegate.swift */; };
-		A27E0A221F7A371D00962656 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27E0A211F7A371D00962656 /* ViewController.swift */; };
 		A27E0A251F7A371D00962656 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A231F7A371D00962656 /* Main.storyboard */; };
 		A27E0A271F7A371D00962656 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A261F7A371D00962656 /* Assets.xcassets */; };
 		A27E0A2A1F7A371D00962656 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A281F7A371D00962656 /* LaunchScreen.storyboard */; };
+		A2F304B41F7E4CBD00613534 /* PhotoDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F304B31F7E4CBD00613534 /* PhotoDetailTableViewController.swift */; };
+		A2F304B61F7E4CD100613534 /* PhotoDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F304B51F7E4CD100613534 /* PhotoDetailTableViewCell.swift */; };
+		A2F304B81F7E52A100613534 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F304B71F7E52A100613534 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,11 +29,13 @@
 		A22143A61F7E469100621E00 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A27E0A1C1F7A371D00962656 /* GoogleMapDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoogleMapDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27E0A1F1F7A371D00962656 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A27E0A211F7A371D00962656 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A27E0A241F7A371D00962656 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A27E0A261F7A371D00962656 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A27E0A291F7A371D00962656 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A27E0A2B1F7A371D00962656 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2F304B31F7E4CBD00613534 /* PhotoDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailTableViewController.swift; sourceTree = "<group>"; };
+		A2F304B51F7E4CD100613534 /* PhotoDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailTableViewCell.swift; sourceTree = "<group>"; };
+		A2F304B71F7E52A100613534 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		BDEC24C49F1D3BD710A9FC9C /* Pods_GoogleMapDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoogleMapDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -86,8 +90,10 @@
 			isa = PBXGroup;
 			children = (
 				A27E0A1F1F7A371D00962656 /* AppDelegate.swift */,
-				A27E0A211F7A371D00962656 /* ViewController.swift */,
 				A27E0A231F7A371D00962656 /* Main.storyboard */,
+				A2F304B71F7E52A100613534 /* MapViewController.swift */,
+				A2F304B31F7E4CBD00613534 /* PhotoDetailTableViewController.swift */,
+				A2F304B51F7E4CD100613534 /* PhotoDetailTableViewCell.swift */,
 				A22143A01F7E400100621E00 /* AddPhotoViewController.swift */,
 				A22143A21F7E401800621E00 /* PhotosTableViewController.swift */,
 				A22143A41F7E402600621E00 /* PhotosTableViewCell.swift */,
@@ -236,11 +242,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2F304B61F7E4CD100613534 /* PhotoDetailTableViewCell.swift in Sources */,
 				A22143A51F7E402600621E00 /* PhotosTableViewCell.swift in Sources */,
-				A27E0A221F7A371D00962656 /* ViewController.swift in Sources */,
 				A22143A11F7E400100621E00 /* AddPhotoViewController.swift in Sources */,
 				A22143A31F7E401800621E00 /* PhotosTableViewController.swift in Sources */,
 				A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */,
+				A2F304B41F7E4CBD00613534 /* PhotoDetailTableViewController.swift in Sources */,
+				A2F304B81F7E52A100613534 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

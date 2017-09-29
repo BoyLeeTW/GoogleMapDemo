@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		26AAC5197337725A1BA65DA1 /* Pods_GoogleMapDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEC24C49F1D3BD710A9FC9C /* Pods_GoogleMapDemo.framework */; };
+		A22143A11F7E400100621E00 /* AddPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22143A01F7E400100621E00 /* AddPhotoViewController.swift */; };
+		A22143A31F7E401800621E00 /* PhotosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22143A21F7E401800621E00 /* PhotosTableViewController.swift */; };
+		A22143A51F7E402600621E00 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22143A41F7E402600621E00 /* PhotosTableViewCell.swift */; };
 		A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27E0A1F1F7A371D00962656 /* AppDelegate.swift */; };
 		A27E0A221F7A371D00962656 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27E0A211F7A371D00962656 /* ViewController.swift */; };
 		A27E0A251F7A371D00962656 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A231F7A371D00962656 /* Main.storyboard */; };
@@ -18,6 +21,10 @@
 /* Begin PBXFileReference section */
 		1C46CD1E570009462510C02F /* Pods-GoogleMapDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoogleMapDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GoogleMapDemo/Pods-GoogleMapDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		2BFCBF11F3AC5228D5677E42 /* Pods-GoogleMapDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoogleMapDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoogleMapDemo/Pods-GoogleMapDemo.release.xcconfig"; sourceTree = "<group>"; };
+		A22143A01F7E400100621E00 /* AddPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoViewController.swift; sourceTree = "<group>"; };
+		A22143A21F7E401800621E00 /* PhotosTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewController.swift; sourceTree = "<group>"; };
+		A22143A41F7E402600621E00 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
+		A22143A61F7E469100621E00 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A27E0A1C1F7A371D00962656 /* GoogleMapDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoogleMapDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27E0A1F1F7A371D00962656 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A27E0A211F7A371D00962656 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -81,9 +88,13 @@
 				A27E0A1F1F7A371D00962656 /* AppDelegate.swift */,
 				A27E0A211F7A371D00962656 /* ViewController.swift */,
 				A27E0A231F7A371D00962656 /* Main.storyboard */,
+				A22143A01F7E400100621E00 /* AddPhotoViewController.swift */,
+				A22143A21F7E401800621E00 /* PhotosTableViewController.swift */,
+				A22143A41F7E402600621E00 /* PhotosTableViewCell.swift */,
 				A27E0A261F7A371D00962656 /* Assets.xcassets */,
 				A27E0A281F7A371D00962656 /* LaunchScreen.storyboard */,
 				A27E0A2B1F7A371D00962656 /* Info.plist */,
+				A22143A61F7E469100621E00 /* GoogleService-Info.plist */,
 			);
 			path = GoogleMapDemo;
 			sourceTree = "<group>";
@@ -165,9 +176,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-GoogleMapDemo/Pods-GoogleMapDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -218,7 +236,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A22143A51F7E402600621E00 /* PhotosTableViewCell.swift in Sources */,
 				A27E0A221F7A371D00962656 /* ViewController.swift in Sources */,
+				A22143A11F7E400100621E00 /* AddPhotoViewController.swift in Sources */,
+				A22143A31F7E401800621E00 /* PhotosTableViewController.swift in Sources */,
 				A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

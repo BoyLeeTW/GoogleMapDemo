@@ -8,6 +8,7 @@
 
 import UIKit
 import GooglePlaces
+import AVFoundation
 
 class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     
@@ -16,11 +17,10 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     var resultView: UITextView?
     let photoImageView  = UIImageView()
     let imagePicker = UIImagePickerController()
-
+    let subView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        photoImageViewSetUp()
 
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
@@ -31,18 +31,19 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         // change position of the search bar
 //        let subView = UIView(frame: CGRect(x: 0, y: 365.0, width: 350.0, height: 45.0))
         
-        let subView = UIView()
         self.view.addSubview(subView)
         subView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
         subView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
-        subView.topAnchor.constraint(equalTo: self.photoImageView.bottomAnchor, constant: 0.0).isActive = true
+        subView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70.0).isActive = true
         subView.heightAnchor.constraint(equalToConstant: 45.0).isActive = true
         subView.translatesAutoresizingMaskIntoConstraints = false
 
         subView.addSubview((searchController?.searchBar)!)
         searchController?.searchBar.sizeToFit()
         searchController?.hidesNavigationBarDuringPresentation = false
-        
+    
+        photoImageViewSetUp()
+
         // When UISearchController presents the results view, present it in
         // this view controller, not one further up the chain.
         definesPresentationContext = true
@@ -52,11 +53,13 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
         self.view.addSubview(photoImageView)
 
-        photoImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
-        photoImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
-        photoImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0).isActive = true
+        photoImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15.0).isActive = true
+        photoImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15.0).isActive = true
+        photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 15.0).isActive = true
         photoImageView.heightAnchor.constraint(equalToConstant: self.view.frame.height / 2).isActive = true
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        photoImageView.clipsToBounds = true
 
         photoImageView.backgroundColor = .red
 
@@ -98,7 +101,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         
         photoAlert.addAction(UIAlertAction(title: "Take a photo now", style: .default, handler: { _ in
             
-            self.openCamera()
+            self.checkCamera()
             
         }))
         
@@ -117,26 +120,39 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     func openCamera() {
         
         let isCameraExist = UIImagePickerController.isSourceTypeAvailable(.camera)
+
+        let isCameraPermissionAllowed = UIImagePickerController.isCameraDeviceAvailable(.rear)
         
         if isCameraExist {
-            
-            imagePicker.delegate = self
-            
-            imagePicker.sourceType = .camera
-            
-            self.present(imagePicker, animated: true)
-            
+
+            self.imagePicker.delegate = self
+
+            self.imagePicker.sourceType = .camera
+
+            self.present(self.imagePicker, animated: true)
+
         } else {
-            
-            let noCaremaAlert = UIAlertController(title: "Sorry", message: "You don't have camera lol", preferredStyle: .alert)
-            
-            noCaremaAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
-            self.present(noCaremaAlert, animated: true)
+
+            let noCameraPermissionAlert = UIAlertController(title: "Sorry", message: "You don't have camera", preferredStyle: .alert)
+
+            noCameraPermissionAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+            self.present(noCameraPermissionAlert, animated: true)
+
         }
-        
+
     }
-    
+
+    func checkCamera() {
+        let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        switch authStatus {
+        case .authorized: openCamera() // Do your stuff here i.e. callCameraMethod()
+        case .denied: alertToEncourageCameraAccessInitially()
+        case .notDetermined: alertPromptToAllowCameraAccessViaSetting()
+        default: alertToEncourageCameraAccessInitially()
+        }
+    }
+
     func openAlbum() {
         
         imagePicker.delegate = self
@@ -145,6 +161,46 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         
         self.present(imagePicker, animated: true)
         
+    }
+
+    func callCamera(){
+        let myPickerController = UIImagePickerController()
+        myPickerController.delegate = self;
+        myPickerController.sourceType = UIImagePickerControllerSourceType.camera
+        
+        self.present(myPickerController, animated: true, completion: nil)
+        NSLog("Camera");
+    }
+    
+    func alertToEncourageCameraAccessInitially() {
+        let alert = UIAlertController(
+            title: "IMPORTANT",
+            message: "Camera access required for capturing photos!",
+            preferredStyle: UIAlertControllerStyle.alert
+        )
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Allow Camera", style: .cancel, handler: { (alert) -> Void in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func alertPromptToAllowCameraAccessViaSetting() {
+        
+        let alert = UIAlertController(
+            title: "IMPORTANT",
+            message: "Camera access required for capturing photos!",
+            preferredStyle: UIAlertControllerStyle.alert
+        )
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel) { alert in
+            if AVCaptureDevice.devices(for: .video).count > 0 {
+                AVCaptureDevice.requestAccess(for: .video) { granted in
+                    DispatchQueue.main.async() {
+                        self.checkCamera() } }
+            }
+            }
+        )
+        present(alert, animated: true, completion: nil)
     }
 
 }

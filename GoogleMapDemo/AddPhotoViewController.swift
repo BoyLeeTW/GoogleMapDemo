@@ -9,8 +9,50 @@
 import UIKit
 import GooglePlaces
 import AVFoundation
+import Firebase
 
 class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+
+    var isEditingPhoto: Bool = false
+
+    @IBAction func touchAddPhotoButton(_ sender: Any) {
+
+        let ref = Database.database().reference()
+        
+        let storageRef = Storage.storage().reference()
+
+        let photoAutoID = ref.child("savedPhoto").childByAutoId().key
+
+        if isEditingPhoto {
+
+            
+
+        } else {
+
+            guard let uploadData = UIImagePNGRepresentation(photoImageView.image!) else { return }
+
+            // Create a reference to the file you want to upload
+            let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
+
+            // Upload the file to the path "images/rivers.jpg"
+            let uploadTask = photoStorageRef.putData(uploadData, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                // Metadata contains file metadata such as size, content-type, and download URL.
+                let downloadURL = metadata.downloadURL()?.absoluteString
+
+                ref.child("savedPhoto").child(photoAutoID).updateChildValues(["photoURL": "\(downloadURL)", "Longitute": "LONGTITUDE", "Latitude": "LATITUDE"])
+            
+            }
+
+
+
+        }
+
+    }
+    
     
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
@@ -30,7 +72,6 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         
         // change position of the search bar
 //        let subView = UIView(frame: CGRect(x: 0, y: 365.0, width: 350.0, height: 45.0))
-        
         self.view.addSubview(subView)
         subView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
         subView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
@@ -42,14 +83,14 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         searchController?.searchBar.sizeToFit()
         searchController?.hidesNavigationBarDuringPresentation = false
     
-        photoImageViewSetUp()
+        setUpPhotoImageView()
 
         // When UISearchController presents the results view, present it in
         // this view controller, not one further up the chain.
         definesPresentationContext = true
     }
 
-    func photoImageViewSetUp() {
+    func setUpPhotoImageView() {
 
         self.view.addSubview(photoImageView)
 
@@ -211,9 +252,10 @@ extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
                            didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
         // Do something with the selected place.
+        print(place.coordinate.latitude)
+        print(place.coordinate.longitude)
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
@@ -230,4 +272,5 @@ extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+
 }

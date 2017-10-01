@@ -60,7 +60,11 @@
                         <viewLayoutGuide key="safeArea" id="sQ6-sB-qm2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Photos" leftItemsSupplementBackButton="YES" id="SJv-Io-icP">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="gJ1-yf-Wmg"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="gJ1-yf-Wmg">
+                            <connections>
+                                <action selector="touchAddPhotoButton:" destination="bQJ-j3-geI" id="dVe-zO-NKU"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Hh-eC-MZ1" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -9,7 +9,8 @@ target 'GoogleMapDemo' do
 
   pod 'GooglePlaces'
   pod 'GoogleMaps'
+  pod 'Firebase/Core'
   pod 'Firebase/Database'
-  pod 'Firebase/Storage'
+  pod 'Firebase/Storage’
 
 end

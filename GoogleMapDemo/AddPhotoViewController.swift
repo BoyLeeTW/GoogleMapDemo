@@ -122,7 +122,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         let isCameraExist = UIImagePickerController.isSourceTypeAvailable(.camera)
 
         let isCameraPermissionAllowed = UIImagePickerController.isCameraDeviceAvailable(.rear)
-        
+
         if isCameraExist {
 
             self.imagePicker.delegate = self

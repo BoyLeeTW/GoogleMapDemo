@@ -21,8 +21,21 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
 
     let imagePicker = UIImagePickerController()
 
+    let photoManager = PhotoManager()
+
+    var existingPhotos = [Photo]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        photoManager.fetchPhotos { (existingPhotos) in
+
+            self.existingPhotos = existingPhotos
+
+            self.tableView.reloadData()
+
+        }
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -35,23 +48,21 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return existingPhotos.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath)
 
-        // Configure the cell...
+        cell.backgroundColor = .black
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.

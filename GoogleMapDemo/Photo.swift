@@ -14,7 +14,7 @@ struct Photo {
 
     var latitude: Double
 
-    var longitude: Double
+    var longitute: Double
 
     var photoImageURL: String
 

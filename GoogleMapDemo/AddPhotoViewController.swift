@@ -29,6 +29,8 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     
     var placeLatitude: Double = 0.0
 
+    var photoAutoID: String = String()
+
     func didPresentSearchController(_ searchController: UISearchController) {
         searchController.searchBar.becomeFirstResponder()
     }
@@ -39,7 +41,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         
         let storageRef = Storage.storage().reference()
 
-        let photoAutoID = ref.child("savedPhoto").childByAutoId().key
+        photoAutoID = ref.child("savedPhoto").childByAutoId().key
 
         sender.isEnabled = false
 
@@ -51,22 +53,22 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
             guard
                 let photoImage = photoImageView.image,
-                let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.3) else { return }
+                let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.6) else { return }
 
             let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
 
-            let uploadTask = photoStorageRef.putData(compressedUploadData, metadata: nil) { (metadata, error) in
+            photoStorageRef.putData(compressedUploadData, metadata: nil) { (metadata, error) in
+
                 guard
                     let metadata = metadata,
-                    // Metadata contains file metadata such as size, content-type, and download URL.
                     let downloadURL = metadata.downloadURL()?.absoluteString
                     else { return }
 
-                let photoInformation = Photo(uniqueID: photoAutoID, latitude: self.placeLatitude, longitude: self.placeLongitute, photoImageURL: downloadURL)
+                let photoInformation = Photo(uniqueID: self.photoAutoID, latitude: self.placeLatitude, longitute: self.placeLongitute, photoImageURL: downloadURL)
 
                 DispatchQueue.global().async {
 
-                    ref.child("savedPhoto").child(photoAutoID).updateChildValues(["ID": "\(photoInformation.uniqueID)", "photoURL": "\(photoInformation.photoImageURL)", "Longitute": photoInformation.longitude, "Latitude": photoInformation.latitude])
+                    ref.child("savedPhoto").child(self.photoAutoID).updateChildValues(["uniqueID": "\(photoInformation.uniqueID)", "url": "\(photoInformation.photoImageURL)", "longitute": photoInformation.longitute, "latitude": photoInformation.latitude])
 
                     sender.isEnabled = true
 
@@ -92,12 +94,14 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         setUpPhotoImageView()
 
         setUpPlaceNameButton()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
 
         assignSearchBarAsFirstResponder()
+
     }
 
     func setUpPlaceNameButton() {
@@ -105,7 +109,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         self.view.addSubview(placeNameButton)
 
         placeNameButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50.0).isActive = true
-        placeNameButton.bottomAnchor.constraint(equalTo: self.photoImageView.topAnchor, constant: -50.0).isActive = true
+        placeNameButton.bottomAnchor.constraint(equalTo: self.photoImageView.topAnchor, constant: -75.0).isActive = true
         placeNameButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0.0).isActive = true
         placeNameButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         placeNameButton.translatesAutoresizingMaskIntoConstraints = false
@@ -166,8 +170,6 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
 
         photoImageView.clipsToBounds = true
-
-        photoImageView.backgroundColor = .red
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapPhotoImageView(sender: )))
         
@@ -248,13 +250,18 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     }
 
     func checkCamera() {
+
         let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
+
         switch authStatus {
+
         case .authorized: openCamera()
         case .denied: alertToEncourageCameraAccessInitially()
         case .notDetermined: alertPromptToAllowCameraAccessViaSetting()
         default: alertToEncourageCameraAccessInitially()
+
         }
+
     }
 
     func openAlbum() {
@@ -268,16 +275,21 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func alertToEncourageCameraAccessInitially() {
+
         let alert = UIAlertController(
             title: "IMPORTANT",
             message: "Camera access required for capturing photos!",
             preferredStyle: UIAlertControllerStyle.alert
         )
+
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Allow Camera", style: .cancel, handler: { (alert) -> Void in
             UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+
         }))
+ 
         present(alert, animated: true, completion: nil)
+
     }
     
     func alertPromptToAllowCameraAccessViaSetting() {
@@ -300,17 +312,15 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
 }
 
-// Handle the user's selection.
 extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
+
         searchController?.isActive = false
-        // Do something with the selected place.
+
         self.placeLatitude = place.coordinate.latitude
         self.placeLongitute = place.coordinate.longitude
-
         self.placeNameButton.setTitle(place.name, for: .normal)
-
         self.searchController?.searchBar.isHidden = true
 
     }
@@ -320,8 +330,7 @@ extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
     }
-    
-    // Turn the network activity indicator on and off again.
+
     func didRequestAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }

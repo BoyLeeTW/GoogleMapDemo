@@ -13,6 +13,21 @@ class PhotoManager {
 
     var reference: DatabaseReference!
 
+    func savePhoto(photoAutoID: String, placeName: String, uniqueID: String, photoImageURL: String, longitute: Double, latitude: Double) {
+
+        reference = Database.database().reference()
+
+        reference.child("savedPhoto").child(photoAutoID).updateChildValues([
+            "placeName": placeName,
+            "uniqueID": "\(uniqueID)",
+            "url": "\(photoImageURL)",
+            "longitute": longitute,
+            "latitude": latitude]
+        )
+
+
+    }
+
     func fetchPhotos(completion: @escaping ([Photo]) -> ()) {
 
         reference = Database.database().reference()
@@ -23,7 +38,7 @@ class PhotoManager {
 
             guard let photoInformationArray = dataSnapshot.value as? [String: Any] else { return }
 
-            for (key, value) in photoInformationArray {
+            for (_, value) in photoInformationArray {
             
                 guard
                     let photoInformation = value as? [String: Any],

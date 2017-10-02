@@ -12,5 +12,6 @@ target 'GoogleMapDemo' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Storage’
+  pod 'SDWebImage', '~> 4.0'
 
 end

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'A3C71CA735CD56323DA5E2A93170CE79'
-               BlueprintName = 'Pods-GoogleMapDemo'
+               BlueprintIdentifier = 'F78560BBFA2F4472C79102F74AE3F0D7'
+               BlueprintName = 'SDWebImage'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Pods-GoogleMapDemo.framework'>
+               BuildableName = 'SDWebImage.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

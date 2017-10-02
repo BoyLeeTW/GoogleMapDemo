@@ -23,6 +23,8 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
     let imagePicker = UIImagePickerController()
 
+    var photoInformation: Photo?
+
     let placeNameButton = UIButton()
 
     var placeLongitute: Double = 0.0
@@ -30,10 +32,6 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     var placeLatitude: Double = 0.0
 
     var photoAutoID: String = String()
-
-    func didPresentSearchController(_ searchController: UISearchController) {
-        searchController.searchBar.becomeFirstResponder()
-    }
 
     @IBAction func touchAddPhotoButton(_ sender: UIBarButtonItem) {
 
@@ -53,7 +51,9 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
             guard
                 let photoImage = photoImageView.image,
-                let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.6) else { return }
+                let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.6),
+                let placeName: String = placeNameButton.titleLabel?.text
+                else { return }
 
             let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
 
@@ -64,11 +64,11 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
                     let downloadURL = metadata.downloadURL()?.absoluteString
                     else { return }
 
-                let photoInformation = Photo(uniqueID: self.photoAutoID, latitude: self.placeLatitude, longitute: self.placeLongitute, photoImageURL: downloadURL)
+                let photoInformation = Photo(placeName: placeName ,uniqueID: self.photoAutoID, latitude: self.placeLatitude, longitute: self.placeLongitute, photoImageURL: downloadURL)
 
                 DispatchQueue.global().async {
 
-                    ref.child("savedPhoto").child(self.photoAutoID).updateChildValues(["uniqueID": "\(photoInformation.uniqueID)", "url": "\(photoInformation.photoImageURL)", "longitute": photoInformation.longitute, "latitude": photoInformation.latitude])
+                    ref.child("savedPhoto").child(self.photoAutoID).updateChildValues(["placeName": photoInformation.placeName, "uniqueID": "\(photoInformation.uniqueID)", "url": "\(photoInformation.photoImageURL)", "longitute": photoInformation.longitute, "latitude": photoInformation.latitude])
 
                     sender.isEnabled = true
 
@@ -96,11 +96,15 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         setUpPlaceNameButton()
 
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
 
-        assignSearchBarAsFirstResponder()
+        if !isEditingPhoto {
+            
+            assignSearchBarAsFirstResponder()
+
+        }
 
     }
 
@@ -145,7 +149,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         self.view.addSubview(subView)
         subView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
         subView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
-        subView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70.0).isActive = true
+        subView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 64.0).isActive = true
         subView.heightAnchor.constraint(equalToConstant: 45.0).isActive = true
         subView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -156,6 +160,12 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         // When UISearchController presents the results view, present it in
         // this view controller, not one further up the chain.
         definesPresentationContext = true
+
+        if isEditingPhoto {
+
+            searchController?.searchBar.isHidden = true
+
+        }
 
     }
 

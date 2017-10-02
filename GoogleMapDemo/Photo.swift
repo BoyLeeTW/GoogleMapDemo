@@ -10,6 +10,8 @@ import Foundation
 
 struct Photo {
 
+    var placeName: String
+
     var uniqueID: String
 
     var latitude: Double

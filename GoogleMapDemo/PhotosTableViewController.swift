@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SDWebImage
 
 class PhotosTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -24,6 +25,8 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
     let photoManager = PhotoManager()
 
     var existingPhotos = [Photo]()
+
+    var selectedRow: Int = Int()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +59,14 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
         cell.backgroundColor = .black
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        self.selectedRow = indexPath.row
+
+        self.performSegue(withIdentifier: "showEditPhotoView", sender: nil)
+        
     }
 
     /*
@@ -233,6 +244,13 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
             let destinationViewController = segue.destination as? AddPhotoViewController
             
             destinationViewController?.isEditingPhoto = true
+
+            destinationViewController?.photoInformation = existingPhotos[selectedRow]
+
+            destinationViewController?.photoImageView.sd_setImage(with: URL(string: existingPhotos[selectedRow].photoImageURL), completed: nil)
+            destinationViewController?.placeNameButton.setTitle(existingPhotos[selectedRow].placeName, for: .normal)
+
+            destinationViewController?.searchController?.searchBar.isHidden = true
 
         }
 

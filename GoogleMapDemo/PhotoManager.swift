@@ -27,13 +27,14 @@ class PhotoManager {
             
                 guard
                     let photoInformation = value as? [String: Any],
+                    let photoPlaceName = photoInformation["placeName"] as? String,
                     let photoUniqueID = photoInformation["uniqueID"] as? String,
                     let photoLatitude = photoInformation["latitude"] as? Double,
                     let photoLongitute = photoInformation["longitute"] as? Double,
                     let photoImageURL = photoInformation["url"] as? String
                     else { return }
 
-                let photo = Photo.init(uniqueID: photoUniqueID, latitude: photoLatitude, longitute: photoLongitute, photoImageURL: photoImageURL)
+                let photo = Photo.init(placeName: photoPlaceName, uniqueID: photoUniqueID, latitude: photoLatitude, longitute: photoLongitute, photoImageURL: photoImageURL)
 
                 photos.append(photo)
 

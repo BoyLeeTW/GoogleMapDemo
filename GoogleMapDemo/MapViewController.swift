@@ -24,19 +24,23 @@ class MapViewController: UIViewController {
 
     var photoImformation: Photo!
 
+    var mapView: GMSMapView!
+
     override func loadView() {
         super.loadView()
 
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
         let camera = GMSCameraPosition.camera(withLatitude: 25.032963599999995, longitude: 121.56542680000001, zoom: 6.0)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
 
         mapView.delegate = self
 
         view = mapView
 
         photoManager.fetchPhotos { (existingPhotos) in
+
+            self.mapView.clear()
 
             self.existingPhotos = existingPhotos
 
@@ -49,7 +53,7 @@ class MapViewController: UIViewController {
                 photoMarker.position = CLLocationCoordinate2D(latitude: photo.latitude, longitude: photo.longitute)
                 photoMarker.title = photo.placeName
                 photoMarker.snippet = "Hey, this is \(photo.placeName)"
-                photoMarker.map = mapView
+                photoMarker.map = self.mapView
                 photoMarker.photoInformation = photo
                 photoMarker.tracksInfoWindowChanges = true
             }

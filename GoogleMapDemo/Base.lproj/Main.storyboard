@@ -36,12 +36,14 @@
                         <barButtonItem key="backBarButtonItem" id="iIY-C3-FfL"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="T8n-iA-wXW">
                             <connections>
-                                <segue destination="bQJ-j3-geI" kind="show" id="yNp-IJ-b15"/>
+                                <action selector="touchAddPhotoButton:" destination="tCb-Bv-hXA" id="gPl-EF-pzW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="Est-GR-e7O" kind="show" id="3hF-a8-LDe"/>
+                        <segue destination="bQJ-j3-geI" kind="show" identifier="showAddPhotoView" id="JNj-LA-kD4"/>
+                        <segue destination="bQJ-j3-geI" kind="show" identifier="showEditPhotoView" id="MCX-c6-JvG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="krA-OA-yaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -60,7 +62,7 @@
                         <viewLayoutGuide key="safeArea" id="sQ6-sB-qm2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Photos" leftItemsSupplementBackButton="YES" id="SJv-Io-icP">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="gJ1-yf-Wmg">
+                        <barButtonItem key="rightBarButtonItem" title="Apply" id="gJ1-yf-Wmg">
                             <connections>
                                 <action selector="touchAddPhotoButton:" destination="bQJ-j3-geI" id="dVe-zO-NKU"/>
                             </connections>
@@ -178,5 +180,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="3hF-a8-LDe"/>
+        <segue reference="MCX-c6-JvG"/>
     </inferredMetricsTieBreakers>
 </document>

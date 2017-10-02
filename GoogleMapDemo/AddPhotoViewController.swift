@@ -11,9 +11,27 @@ import GooglePlaces
 import AVFoundation
 import Firebase
 
-class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UISearchControllerDelegate {
 
     var isEditingPhoto: Bool = false
+
+    var resultsViewController: GMSAutocompleteResultsViewController?
+
+    var searchController: UISearchController?
+
+    let photoImageView  = UIImageView()
+
+    let imagePicker = UIImagePickerController()
+
+    let placeNameButton = UIButton()
+
+    var placeLongitute: Double?
+    
+    var placeLatitude: Double?
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        searchController.searchBar.becomeFirstResponder()
+    }
 
     @IBAction func touchAddPhotoButton(_ sender: Any) {
 
@@ -25,44 +43,73 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
         if isEditingPhoto {
 
-            
+            // Update Photo on stroage!
 
         } else {
 
             guard let uploadData = UIImagePNGRepresentation(photoImageView.image!) else { return }
 
-            // Create a reference to the file you want to upload
             let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
 
-            // Upload the file to the path "images/rivers.jpg"
             let uploadTask = photoStorageRef.putData(uploadData, metadata: nil) { (metadata, error) in
-                guard let metadata = metadata else {
-                    // Uh-oh, an error occurred!
-                    return
-                }
+                guard let metadata = metadata else { return }
+
                 // Metadata contains file metadata such as size, content-type, and download URL.
                 let downloadURL = metadata.downloadURL()?.absoluteString
 
-                ref.child("savedPhoto").child(photoAutoID).updateChildValues(["photoURL": "\(downloadURL)", "Longitute": "LONGTITUDE", "Latitude": "LATITUDE"])
-            
+                ref.child("savedPhoto").child(photoAutoID).updateChildValues(["ID": "\(photoAutoID)", "photoURL": "\(downloadURL)", "Longitute": self.placeLongitute, "Latitude": self.placeLatitude])
+
             }
-
-
 
         }
 
     }
-    
-    
-    var resultsViewController: GMSAutocompleteResultsViewController?
-    var searchController: UISearchController?
-    var resultView: UITextView?
-    let photoImageView  = UIImageView()
-    let imagePicker = UIImagePickerController()
-    let subView = UIView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setUpGooglePlacesAutoComplete()
+
+        setUpPhotoImageView()
+
+        setUpPlaceNameButton()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(false)
+
+        assignSearchBarAsFirstResponder()
+    }
+
+    func setUpPlaceNameButton() {
+
+        self.view.addSubview(placeNameButton)
+
+        placeNameButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50.0).isActive = true
+        placeNameButton.bottomAnchor.constraint(equalTo: self.photoImageView.topAnchor, constant: -50.0).isActive = true
+        placeNameButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0.0).isActive = true
+        placeNameButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        placeNameButton.translatesAutoresizingMaskIntoConstraints = false
+
+        self.placeNameButton.backgroundColor = .red
+
+        self.placeNameButton.addTarget(self, action: #selector(assignSearchBarAsFirstResponder), for: .touchUpInside)
+
+    }
+
+    @objc func assignSearchBarAsFirstResponder() {
+
+        self.searchController?.searchBar.isHidden = false
+
+        DispatchQueue.main.async {
+            self.searchController?.searchBar.becomeFirstResponder()
+        }
+
+    }
+
+    func setUpGooglePlacesAutoComplete() {
+
+        let subView = UIView()
 
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
@@ -71,23 +118,22 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         searchController?.searchResultsUpdater = resultsViewController
         
         // change position of the search bar
-//        let subView = UIView(frame: CGRect(x: 0, y: 365.0, width: 350.0, height: 45.0))
+        //        let subView = UIView(frame: CGRect(x: 0, y: 365.0, width: 350.0, height: 45.0))
         self.view.addSubview(subView)
         subView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0.0).isActive = true
         subView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0.0).isActive = true
         subView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70.0).isActive = true
         subView.heightAnchor.constraint(equalToConstant: 45.0).isActive = true
         subView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         subView.addSubview((searchController?.searchBar)!)
         searchController?.searchBar.sizeToFit()
         searchController?.hidesNavigationBarDuringPresentation = false
-    
-        setUpPhotoImageView()
 
         // When UISearchController presents the results view, present it in
         // this view controller, not one further up the chain.
         definesPresentationContext = true
+
     }
 
     func setUpPhotoImageView() {
@@ -123,9 +169,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
                 self.photoImageView.image = image
                 
                 self.photoImageView.contentMode = .scaleAspectFill
-                
-//                self.journeyImageReminderLabel.isHidden = true
-                
+
             } else {
                 
                 print("Something went wrong")
@@ -136,7 +180,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         
     }
     
-    @objc func handleTapPhotoImageView(sender: UITapGestureRecognizer) {
+    @objc func handleTapPhotoImageView(sender: UITapGestureRecognizer?) {
         
         let photoAlert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
         
@@ -187,7 +231,7 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     func checkCamera() {
         let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
         switch authStatus {
-        case .authorized: openCamera() // Do your stuff here i.e. callCameraMethod()
+        case .authorized: openCamera()
         case .denied: alertToEncourageCameraAccessInitially()
         case .notDetermined: alertPromptToAllowCameraAccessViaSetting()
         default: alertToEncourageCameraAccessInitially()
@@ -197,20 +241,11 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
     func openAlbum() {
         
         imagePicker.delegate = self
-        
+
         imagePicker.sourceType = .photoLibrary
-        
+
         self.present(imagePicker, animated: true)
         
-    }
-
-    func callCamera(){
-        let myPickerController = UIImagePickerController()
-        myPickerController.delegate = self;
-        myPickerController.sourceType = UIImagePickerControllerSourceType.camera
-        
-        self.present(myPickerController, animated: true, completion: nil)
-        NSLog("Camera");
     }
     
     func alertToEncourageCameraAccessInitially() {
@@ -252,10 +287,13 @@ extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
                            didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
         // Do something with the selected place.
-        print(place.coordinate.latitude)
-        print(place.coordinate.longitude)
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
+        self.placeLatitude = place.coordinate.latitude
+        self.placeLongitute = place.coordinate.longitude
+
+        self.placeNameButton.setTitle(place.name, for: .normal)
+
+        self.searchController?.searchBar.isHidden = true
+
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
@@ -274,3 +312,19 @@ extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
     }
 
 }
+
+//extension AddPhotoViewController: UITextFieldDelegate {
+//
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//    }
+//
+//}
+
+//extension AddPhotoViewController: UISearchBarDelegate {
+//
+//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+//        print("END EDITING!")
+//    }
+//
+//}
+

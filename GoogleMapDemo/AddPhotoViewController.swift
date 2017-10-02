@@ -25,15 +25,15 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
     let placeNameButton = UIButton()
 
-    var placeLongitute: Double?
+    var placeLongitute: Double = 0.0
     
-    var placeLatitude: Double?
+    var placeLatitude: Double = 0.0
 
     func didPresentSearchController(_ searchController: UISearchController) {
         searchController.searchBar.becomeFirstResponder()
     }
 
-    @IBAction func touchAddPhotoButton(_ sender: Any) {
+    @IBAction func touchAddPhotoButton(_ sender: UIBarButtonItem) {
 
         let ref = Database.database().reference()
         
@@ -41,23 +41,42 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
         let photoAutoID = ref.child("savedPhoto").childByAutoId().key
 
+        sender.isEnabled = false
+
         if isEditingPhoto {
 
             // Update Photo on stroage!
 
         } else {
 
-            guard let uploadData = UIImagePNGRepresentation(photoImageView.image!) else { return }
+            guard
+                let photoImage = photoImageView.image,
+                let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.3) else { return }
 
             let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
 
-            let uploadTask = photoStorageRef.putData(uploadData, metadata: nil) { (metadata, error) in
-                guard let metadata = metadata else { return }
+            let uploadTask = photoStorageRef.putData(compressedUploadData, metadata: nil) { (metadata, error) in
+                guard
+                    let metadata = metadata,
+                    // Metadata contains file metadata such as size, content-type, and download URL.
+                    let downloadURL = metadata.downloadURL()?.absoluteString
+                    else { return }
 
-                // Metadata contains file metadata such as size, content-type, and download URL.
-                let downloadURL = metadata.downloadURL()?.absoluteString
+                let photoInformation = Photo(uniqueID: photoAutoID, latitude: self.placeLatitude, longitude: self.placeLongitute, photoImageURL: downloadURL)
 
-                ref.child("savedPhoto").child(photoAutoID).updateChildValues(["ID": "\(photoAutoID)", "photoURL": "\(downloadURL)", "Longitute": self.placeLongitute, "Latitude": self.placeLatitude])
+                DispatchQueue.global().async {
+
+                    ref.child("savedPhoto").child(photoAutoID).updateChildValues(["ID": "\(photoInformation.uniqueID)", "photoURL": "\(photoInformation.photoImageURL)", "Longitute": photoInformation.longitude, "Latitude": photoInformation.latitude])
+
+                    sender.isEnabled = true
+
+                }
+
+                DispatchQueue.main.async {
+
+                    self.navigationController?.popViewController(animated: true)
+
+                }
 
             }
 

@@ -54,11 +54,14 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath) as! PhotosTableViewCell
 
-        cell.backgroundColor = .black
+        cell.photoImageView.sd_setImage(with: URL(string: existingPhotos[indexPath.row].photoImageURL), completed: nil)
+
+        cell.photoNameLabel.text = existingPhotos[indexPath.row].placeName
 
         return cell
+
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

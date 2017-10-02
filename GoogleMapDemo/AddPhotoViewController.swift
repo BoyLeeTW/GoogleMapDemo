@@ -68,7 +68,13 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
 
                 DispatchQueue.global().async {
 
-                    ref.child("savedPhoto").child(self.photoAutoID).updateChildValues(["placeName": photoInformation.placeName, "uniqueID": "\(photoInformation.uniqueID)", "url": "\(photoInformation.photoImageURL)", "longitute": photoInformation.longitute, "latitude": photoInformation.latitude])
+                    ref.child("savedPhoto").child(self.photoAutoID).updateChildValues([
+                        "placeName": photoInformation.placeName,
+                        "uniqueID": "\(photoInformation.uniqueID)",
+                        "url": "\(photoInformation.photoImageURL)",
+                        "longitute": photoInformation.longitute,
+                        "latitude": photoInformation.latitude]
+                    )
 
                     sender.isEnabled = true
 

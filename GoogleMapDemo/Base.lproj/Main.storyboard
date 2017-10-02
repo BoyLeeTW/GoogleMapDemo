@@ -89,10 +89,10 @@
             </objects>
             <point key="canvasLocation" x="3244" y="-149"/>
         </scene>
-        <!--View Controller-->
+        <!--Map View Controller-->
         <scene sceneID="nnf-hs-N1s">
             <objects>
-                <viewController id="wqu-nj-yut" sceneMemberID="viewController">
+                <viewController id="wqu-nj-yut" customClass="MapViewController" customModule="GoogleMapDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="N6U-Zb-t5U">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -101,7 +101,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="doa-d7-Yfg"/>
                     <connections>
-                        <segue destination="bQJ-j3-geI" kind="show" id="7Lb-Uv-UQG"/>
+                        <segue destination="bQJ-j3-geI" kind="show" identifier="showEditView" id="7Lb-Uv-UQG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RdU-3e-1v5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -167,6 +167,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="MCX-c6-JvG"/>
+        <segue reference="7Lb-Uv-UQG"/>
     </inferredMetricsTieBreakers>
 </document>

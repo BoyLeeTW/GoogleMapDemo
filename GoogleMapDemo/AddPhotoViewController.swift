@@ -39,13 +39,48 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
         
         let storageRef = Storage.storage().reference()
 
-        photoAutoID = ref.child("savedPhoto").childByAutoId().key
-
         sender.isEnabled = false
 
         if isEditingPhoto {
 
-            // Update Photo on stroage!
+            guard
+                let photoImage = photoImageView.image,
+                let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.6),
+                let placeName: String = placeNameButton.titleLabel?.text
+                else { return }
+
+            let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
+
+            photoStorageRef.putData(compressedUploadData, metadata: nil) { (metadata, error) in
+                
+                guard
+                    let metadata = metadata,
+                    let downloadURL = metadata.downloadURL()?.absoluteString
+                    else { return }
+                
+                let photoInformation = Photo(placeName: placeName ,uniqueID: self.photoAutoID, latitude: self.placeLatitude, longitute: self.placeLongitute, photoImageURL: downloadURL)
+                
+                DispatchQueue.global().async {
+                    
+                    ref.child("savedPhoto").child(self.photoAutoID).updateChildValues([
+                        "placeName": photoInformation.placeName,
+                        "uniqueID": "\(photoInformation.uniqueID)",
+                        "url": "\(photoInformation.photoImageURL)",
+                        "longitute": photoInformation.longitute,
+                        "latitude": photoInformation.latitude]
+                    )
+
+                    sender.isEnabled = true
+
+                }
+
+                DispatchQueue.main.async {
+
+                    self.navigationController?.popViewController(animated: true)
+
+                }
+
+            }
 
         } else {
 
@@ -54,6 +89,8 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
                 let compressedUploadData = UIImageJPEGRepresentation(photoImage, 0.6),
                 let placeName: String = placeNameButton.titleLabel?.text
                 else { return }
+
+            photoAutoID = ref.child("savedPhoto").childByAutoId().key
 
             let photoStorageRef = storageRef.child("savedPhoto").child("\(photoAutoID).jpg")
 

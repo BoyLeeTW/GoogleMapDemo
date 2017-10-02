@@ -251,7 +251,10 @@ class PhotosTableViewController: UITableViewController, UINavigationControllerDe
             destinationViewController?.photoInformation = existingPhotos[selectedRow]
 
             destinationViewController?.photoImageView.sd_setImage(with: URL(string: existingPhotos[selectedRow].photoImageURL), completed: nil)
+
             destinationViewController?.placeNameButton.setTitle(existingPhotos[selectedRow].placeName, for: .normal)
+
+            destinationViewController?.photoAutoID = existingPhotos[selectedRow].uniqueID
 
             destinationViewController?.searchController?.searchBar.isHidden = true
 

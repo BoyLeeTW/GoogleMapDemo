@@ -23,6 +23,8 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
 
     let placeNameButton = UIButton()
 
+    let deletePhotoButton = UIButton()
+
     let photoManager = PhotoManager()
 
     var isEditingPhoto: Bool = false
@@ -100,13 +102,19 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
 
         setUpGooglePlacesAutoComplete()
 
+        setUpPlaceNameButton()
+
         setUpPhotoImageView()
 
-        setUpPlaceNameButton()
+        setUpDeletePhotoButton()
 
         if !isEditingPhoto {
 
             self.placeNameButton.isHidden = true
+
+        } else {
+
+            self.deletePhotoButton.isHidden = false
 
         }
 
@@ -125,18 +133,17 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
 
     func setUpPlaceNameButton() {
 
-        self.view.addSubview(placeNameButton)
+        view.addSubview(placeNameButton)
 
         placeNameButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50.0).isActive = true
         placeNameButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 64.0).isActive = true
         placeNameButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0.0).isActive = true
         placeNameButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-
         placeNameButton.translatesAutoresizingMaskIntoConstraints = false
 
-        self.placeNameButton.backgroundColor = .red
+        placeNameButton.backgroundColor = .red
 
-        self.placeNameButton.addTarget(self, action: #selector(assignSearchBarAsFirstResponder), for: .touchUpInside)
+        placeNameButton.addTarget(self, action: #selector(assignSearchBarAsFirstResponder), for: .touchUpInside)
 
     }
 
@@ -148,6 +155,28 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
             self.searchController?.searchBar.becomeFirstResponder()
         }
 
+    }
+
+    @objc func touchDeletePhotoButton() {
+
+        let alertController = UIAlertController(title: "Attention",
+                                                message: "Do you really want to delete?",
+                                                preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .default, handler: { _ in
+            
+            self.navigationController?.popViewController(animated: true)
+
+            self.photoManager.deletePhoto(photoAutoID: self.photoAutoID)
+
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+        
     }
 
     func setUpGooglePlacesAutoComplete() {
@@ -191,10 +220,9 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
 
         photoImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15.0).isActive = true
         photoImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15.0).isActive = true
-        photoImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 15.0).isActive = true
+        photoImageView.topAnchor.constraint(equalTo: self.placeNameButton.bottomAnchor, constant: 30.0).isActive = true
         photoImageView.heightAnchor.constraint(equalToConstant: self.view.frame.height / 2).isActive = true
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
-
         photoImageView.clipsToBounds = true
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapPhotoImageView(sender: )))
@@ -202,8 +230,28 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
         tapRecognizer.delegate = self
 
         photoImageView.addGestureRecognizer(tapRecognizer)
-        
+
         photoImageView.isUserInteractionEnabled = true
+
+    }
+
+    func setUpDeletePhotoButton() {
+
+        self.view.addSubview(deletePhotoButton)
+
+        deletePhotoButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50.0).isActive = true
+        deletePhotoButton.topAnchor.constraint(equalTo: self.photoImageView.bottomAnchor, constant: 30).isActive = true
+        deletePhotoButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0.0).isActive = true
+        deletePhotoButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        deletePhotoButton.translatesAutoresizingMaskIntoConstraints = false
+
+        deletePhotoButton.backgroundColor = .red
+
+        deletePhotoButton.setTitle("DELETE", for: .normal)
+
+        deletePhotoButton.addTarget(self, action: #selector(touchDeletePhotoButton), for: .touchUpInside)
+
+        deletePhotoButton.isHidden = true
 
     }
 
@@ -388,9 +436,6 @@ extension AddPhotoViewController: UISearchBarDelegate {
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 
-        print(self.placeNameButton.titleLabel?.text)
-
-        print("CANCELED!")
         if self.placeNameButton.titleLabel?.text == nil {
 
             let alert = UIAlertController(

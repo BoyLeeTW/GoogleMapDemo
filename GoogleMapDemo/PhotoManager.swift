@@ -25,6 +25,13 @@ class PhotoManager {
             "latitude": latitude]
         )
 
+    }
+
+    func deletePhoto(photoAutoID: String) {
+
+        reference = Database.database().reference()
+
+        reference.child("savedPhoto").child(photoAutoID).removeValue()
 
     }
 

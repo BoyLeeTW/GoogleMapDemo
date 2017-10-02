@@ -51,6 +51,7 @@ class MapViewController: UIViewController {
                 photoMarker.snippet = "Hey, this is \(photo.placeName)"
                 photoMarker.map = mapView
                 photoMarker.photoInformation = photo
+                photoMarker.tracksInfoWindowChanges = true
             }
         }
 

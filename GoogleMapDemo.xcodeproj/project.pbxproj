@@ -20,6 +20,10 @@
 		A27E0A251F7A371D00962656 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A231F7A371D00962656 /* Main.storyboard */; };
 		A27E0A271F7A371D00962656 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A261F7A371D00962656 /* Assets.xcassets */; };
 		A27E0A2A1F7A371D00962656 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A281F7A371D00962656 /* LaunchScreen.storyboard */; };
+		A2F8DB831F838F6100FF09D9 /* AddPhotoViewController+UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F8DB821F838F6100FF09D9 /* AddPhotoViewController+UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift */; };
+		A2F8DB851F838F8A00FF09D9 /* AddPhotoViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F8DB841F838F8A00FF09D9 /* AddPhotoViewController+UISearchBarDelegate.swift */; };
+		A2F8DB871F83906100FF09D9 /* AddPhotoViewController+GMSAutocompleteResultsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F8DB861F83906100FF09D9 /* AddPhotoViewController+GMSAutocompleteResultsViewControllerDelegate.swift */; };
+		A2F8DB891F8391B600FF09D9 /* PhotosTableViewController+UINavigationControllerDelegate, UIImagePickerControllerDelegate .swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F8DB881F8391B600FF09D9 /* PhotosTableViewController+UINavigationControllerDelegate, UIImagePickerControllerDelegate .swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,10 @@
 		A284C2CD1F82D5B60034A3F1 /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 		A284C2CE1F82D5B60034A3F1 /* PhotosTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewController.swift; sourceTree = "<group>"; };
 		A284C2CF1F82D5C20034A3F1 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
+		A2F8DB821F838F6100FF09D9 /* AddPhotoViewController+UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddPhotoViewController+UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift"; sourceTree = "<group>"; };
+		A2F8DB841F838F8A00FF09D9 /* AddPhotoViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddPhotoViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
+		A2F8DB861F83906100FF09D9 /* AddPhotoViewController+GMSAutocompleteResultsViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddPhotoViewController+GMSAutocompleteResultsViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		A2F8DB881F8391B600FF09D9 /* PhotosTableViewController+UINavigationControllerDelegate, UIImagePickerControllerDelegate .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosTableViewController+UINavigationControllerDelegate, UIImagePickerControllerDelegate .swift"; sourceTree = "<group>"; };
 		BDEC24C49F1D3BD710A9FC9C /* Pods_GoogleMapDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoogleMapDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -124,8 +132,12 @@
 			isa = PBXGroup;
 			children = (
 				A284C2CB1F82D5B60034A3F1 /* AddPhotoViewController.swift */,
+				A2F8DB841F838F8A00FF09D9 /* AddPhotoViewController+UISearchBarDelegate.swift */,
+				A2F8DB861F83906100FF09D9 /* AddPhotoViewController+GMSAutocompleteResultsViewControllerDelegate.swift */,
+				A2F8DB821F838F6100FF09D9 /* AddPhotoViewController+UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift */,
 				A284C2CC1F82D5B60034A3F1 /* MapViewController.swift */,
 				A284C2CE1F82D5B60034A3F1 /* PhotosTableViewController.swift */,
+				A2F8DB881F8391B600FF09D9 /* PhotosTableViewController+UINavigationControllerDelegate, UIImagePickerControllerDelegate .swift */,
 				A284C2CD1F82D5B60034A3F1 /* PhotoManager.swift */,
 			);
 			path = Controller;
@@ -275,8 +287,12 @@
 				A251D2981F832509006B1B1F /* Photo.swift in Sources */,
 				A251D2971F832507006B1B1F /* PhotosTableViewCell.swift in Sources */,
 				A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */,
+				A2F8DB831F838F6100FF09D9 /* AddPhotoViewController+UIImagePickerControllerDelegate, UINavigationControllerDelegate.swift in Sources */,
 				A251D2941F8324FF006B1B1F /* AddPhotoViewController.swift in Sources */,
 				A251D2951F832502006B1B1F /* PhotosTableViewController.swift in Sources */,
+				A2F8DB891F8391B600FF09D9 /* PhotosTableViewController+UINavigationControllerDelegate, UIImagePickerControllerDelegate .swift in Sources */,
+				A2F8DB871F83906100FF09D9 /* AddPhotoViewController+GMSAutocompleteResultsViewControllerDelegate.swift in Sources */,
+				A2F8DB851F838F8A00FF09D9 /* AddPhotoViewController+UISearchBarDelegate.swift in Sources */,
 				A251D2961F832504006B1B1F /* PhotoManager.swift in Sources */,
 				A251D2931F8324FC006B1B1F /* MapViewController.swift in Sources */,
 			);

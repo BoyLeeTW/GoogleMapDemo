@@ -8,7 +8,6 @@
 
 import UIKit
 import GooglePlaces
-import AVFoundation
 import Firebase
 
 class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDelegate {
@@ -84,13 +83,13 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
                 )
                 
                 sender.isEnabled = true
-                
+
             }
-            
+
             DispatchQueue.main.async {
-                
+
                 self.navigationController?.popViewController(animated: true)
-                
+
             }
             
         }
@@ -256,209 +255,3 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
     }
 
 }
-
-extension AddPhotoViewController: GMSAutocompleteResultsViewControllerDelegate {
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
-
-        searchController?.isActive = false
-
-        self.placeLatitude = place.coordinate.latitude
-        self.placeLongitute = place.coordinate.longitude
-        self.placeNameButton.setTitle(place.name, for: .normal)
-        self.placeNameButton.isHidden = false
-        self.searchController?.searchBar.isHidden = true
-
-    }
-    
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
-
-        print("Error: ", error.localizedDescription)
-    }
-
-    func didRequestAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
-
-}
-
-extension AddPhotoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        self.dismiss(animated: true) { () -> Void in
-            
-            if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                
-                self.photoImageView.image = image
-                
-                self.photoImageView.contentMode = .scaleAspectFill
-                
-            } else {
-                
-                print("Something went wrong")
-                
-            }
-            
-        }
-        
-    }
-    
-    @objc func handleTapPhotoImageView(sender: UITapGestureRecognizer?) {
-        
-        let photoAlert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
-        
-        photoAlert.addAction(UIAlertAction(title: "Take a photo now", style: .default, handler: { _ in
-            
-            self.checkCamera()
-            
-        }))
-        
-        photoAlert.addAction(UIAlertAction(title: "Choose from album", style: .default, handler: { _ in
-            
-            self.openAlbum()
-            
-        }))
-        
-        photoAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        self.present(photoAlert, animated: true)
-        
-    }
-    
-    func openCamera() {
-        
-        let isCameraExist = UIImagePickerController.isSourceTypeAvailable(.camera)
-        
-        let isCameraPermissionAllowed = UIImagePickerController.isCameraDeviceAvailable(.rear)
-        
-        if isCameraExist {
-            
-            self.imagePicker.delegate = self
-            
-            self.imagePicker.sourceType = .camera
-            
-            self.present(self.imagePicker, animated: true)
-            
-        } else {
-            
-            let noCameraPermissionAlert = UIAlertController(title: "Sorry", message: "You don't have camera", preferredStyle: .alert)
-            
-            noCameraPermissionAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
-            self.present(noCameraPermissionAlert, animated: true)
-            
-        }
-        
-    }
-    
-    func checkCamera() {
-        
-        let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        
-        switch authStatus {
-            
-        case .authorized: openCamera()
-        case .denied: alertToEncourageCameraAccessInitially()
-        case .notDetermined: alertPromptToAllowCameraAccessViaSetting()
-        default: alertToEncourageCameraAccessInitially()
-            
-        }
-        
-    }
-    
-    func openAlbum() {
-        
-        imagePicker.delegate = self
-        
-        imagePicker.sourceType = .photoLibrary
-        
-        self.present(imagePicker, animated: true)
-        
-    }
-    
-    func alertToEncourageCameraAccessInitially() {
-        
-        let alert = UIAlertController(
-            title: "IMPORTANT",
-            message: "Camera access required for capturing photos!",
-            preferredStyle: UIAlertControllerStyle.alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Allow Camera", style: .cancel, handler: { (alert) -> Void in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-            
-        }))
-        
-        present(alert, animated: true, completion: nil)
-        
-    }
-    
-    func alertPromptToAllowCameraAccessViaSetting() {
-        
-        let alert = UIAlertController(
-            title: "IMPORTANT",
-            message: "Camera access required for capturing photos!",
-            preferredStyle: UIAlertControllerStyle.alert
-        )
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel) { alert in
-            if AVCaptureDevice.devices(for: .video).count > 0 {
-                AVCaptureDevice.requestAccess(for: .video) { granted in
-                    DispatchQueue.main.async() {
-                        self.checkCamera() } }
-            }
-            }
-        )
-        present(alert, animated: true, completion: nil)
-    }
-    
-
-}
-
-//extension AddPhotoViewController: UITextFieldDelegate {
-//
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//    }
-//
-//}
-
-extension AddPhotoViewController: UISearchBarDelegate {
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print("END EDITING!")
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-
-        if self.placeNameButton.titleLabel?.text == nil {
-
-            let alert = UIAlertController(
-                title: "IMPORTANT",
-                message: "Must choose a place for this photo!",
-                preferredStyle: .alert
-            )
-
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: { _ in
-                
-                self.assignSearchBarAsFirstResponder()
-                
-            }))
-
-            self.present(alert, animated: true)
-
-        } else {
-
-            searchController?.searchBar.isHidden = true
-
-        }
-
-    }
-
-}
-

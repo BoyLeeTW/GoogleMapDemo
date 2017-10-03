@@ -84,13 +84,13 @@ class AddPhotoViewController: UIViewController, UIGestureRecognizerDelegate, UIS
                 )
                 
                 sender.isEnabled = true
-                
+
             }
-            
+
             DispatchQueue.main.async {
-                
+
                 self.navigationController?.popViewController(animated: true)
-                
+
             }
             
         }

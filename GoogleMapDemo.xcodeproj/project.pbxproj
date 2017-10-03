@@ -8,11 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		26AAC5197337725A1BA65DA1 /* Pods_GoogleMapDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEC24C49F1D3BD710A9FC9C /* Pods_GoogleMapDemo.framework */; };
+		A251D2931F8324FC006B1B1F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A284C2CC1F82D5B60034A3F1 /* MapViewController.swift */; };
+		A251D2941F8324FF006B1B1F /* AddPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A284C2CB1F82D5B60034A3F1 /* AddPhotoViewController.swift */; };
+		A251D2951F832502006B1B1F /* PhotosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A284C2CE1F82D5B60034A3F1 /* PhotosTableViewController.swift */; };
+		A251D2961F832504006B1B1F /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A284C2CD1F82D5B60034A3F1 /* PhotoManager.swift */; };
+		A251D2971F832507006B1B1F /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A284C2CF1F82D5C20034A3F1 /* PhotosTableViewCell.swift */; };
+		A251D2981F832509006B1B1F /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A284C2CA1F82D5AD0034A3F1 /* Photo.swift */; };
+		A251D2991F83252C006B1B1F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A2B1F7A371D00962656 /* Info.plist */; };
+		A251D29B1F832592006B1B1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A284C2C01F80E6130034A3F1 /* GoogleService-Info.plist */; };
 		A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27E0A1F1F7A371D00962656 /* AppDelegate.swift */; };
 		A27E0A251F7A371D00962656 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A231F7A371D00962656 /* Main.storyboard */; };
 		A27E0A271F7A371D00962656 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A261F7A371D00962656 /* Assets.xcassets */; };
 		A27E0A2A1F7A371D00962656 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27E0A281F7A371D00962656 /* LaunchScreen.storyboard */; };
-		A284C2C11F80E7B20034A3F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A284C2C01F80E6130034A3F1 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -187,9 +194,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A27E0A2A1F7A371D00962656 /* LaunchScreen.storyboard in Resources */,
-				A284C2C11F80E7B20034A3F1 /* GoogleService-Info.plist in Resources */,
 				A27E0A271F7A371D00962656 /* Assets.xcassets in Resources */,
+				A251D2991F83252C006B1B1F /* Info.plist in Resources */,
 				A27E0A251F7A371D00962656 /* Main.storyboard in Resources */,
+				A251D29B1F832592006B1B1F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +272,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A251D2981F832509006B1B1F /* Photo.swift in Sources */,
+				A251D2971F832507006B1B1F /* PhotosTableViewCell.swift in Sources */,
 				A27E0A201F7A371D00962656 /* AppDelegate.swift in Sources */,
+				A251D2941F8324FF006B1B1F /* AddPhotoViewController.swift in Sources */,
+				A251D2951F832502006B1B1F /* PhotosTableViewController.swift in Sources */,
+				A251D2961F832504006B1B1F /* PhotoManager.swift in Sources */,
+				A251D2931F8324FC006B1B1F /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

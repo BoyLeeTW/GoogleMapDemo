@@ -61,7 +61,7 @@
                         <barButtonItem key="backBarButtonItem" id="iIY-C3-FfL"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="T8n-iA-wXW">
                             <connections>
-                                <action selector="touchAddPhotoButton:" destination="tCb-Bv-hXA" id="gPl-EF-pzW"/>
+                                <action selector="touchAddPhotoButton:" destination="tCb-Bv-hXA" id="Dez-94-kif"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -175,6 +175,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="MCX-c6-JvG"/>
+        <segue reference="7Lb-Uv-UQG"/>
     </inferredMetricsTieBreakers>
 </document>

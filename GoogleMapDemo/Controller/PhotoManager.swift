@@ -13,6 +13,8 @@ class PhotoManager {
 
     var reference: DatabaseReference!
 
+    var storageReference: StorageReference!
+
     func savePhoto(photoAutoID: String, placeName: String, uniqueID: String, photoImageURL: String, longitute: Double, latitude: Double) {
 
         reference = Database.database().reference()
@@ -32,6 +34,17 @@ class PhotoManager {
         reference = Database.database().reference()
 
         reference.child("savedPhoto").child(photoAutoID).removeValue()
+
+        storageReference = Storage.storage().reference()
+
+        storageReference.child("savedPhoto").child("\(photoAutoID).jpg").delete { error in
+
+            if let error = error {
+
+                print(error)
+
+            }
+        }
 
     }
 
